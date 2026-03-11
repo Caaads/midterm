@@ -3,7 +3,6 @@ import * as THREE from './three.module.js'
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x101820);
 
-
 const camera = new THREE.PerspectiveCamera(
   75, 
   window.innerWidth / window.innerHeight,
@@ -12,11 +11,9 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.z = 5;
 
-
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
+document.getElementById('app').appendChild(renderer.domElement);
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
@@ -24,20 +21,30 @@ const pointLight = new THREE.PointLight(0xffffff, 1.2);
 pointLight.position.set(4, 5, 6);
 scene.add(pointLight);
 
-
+// --- UPDATED MATERIAL ---
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshStandardMaterial({ color: 0x00ff00  });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const material = new THREE.MeshStandardMaterial({ 
+    color: 0x00ff00, 
+    wireframe: true // Enables the wireframe design
+});
+
+// CUBE
+const cube = new THREE.Mesh( 
+    new THREE.BoxGeometry(1, 1, 1), 
+    material 
+); 
+cube.position.set(-5, 10, 0); 
+scene.add(cube); 
+
 
 // SPHERE
 const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
+    new THREE.SphereGeometry(10, 32, 32),
     material
-);
-sphere.position.set(-1, 0, 0);
-scene.add(sphere);
 
+);
+sphere.position.set(-5, 0, 0);
+scene.add(sphere);
 
 // TORUS (donut)
 const torus = new THREE.Mesh(
@@ -47,12 +54,9 @@ const torus = new THREE.Mesh(
 torus.position.set(5, 0, 0);
 scene.add(torus);
 
-
-
 const randomSpinX = 0.01 + Math.random() * 0.02;
 const randomSpinY = 0.01 + Math.random() * 0.02;
 const randomMoveAmp = 0.2 + Math.random() * 0.4;
-
 
 function animate(time) {
   time *= 0.001;
@@ -73,7 +77,6 @@ function animate(time) {
   requestAnimationFrame(animate);
 }
 requestAnimationFrame(animate);
-
 
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
